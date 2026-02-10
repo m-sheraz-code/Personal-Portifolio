@@ -10,6 +10,10 @@ import { SmoothScroll } from '@/components/ui/SmoothScroll';
 import { BackgroundAnimation } from '@/components/public/BackgroundAnimation';
 import { PageTransition } from '@/components/public/PageTransition';
 
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { ScrollScene } from '@/components/public/ScrollScene';
+import { CustomCursor } from '@/components/ui/CustomCursor';
+
 const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '#about' },
@@ -90,8 +94,9 @@ function Header() {
                         ))}
                     </div>
 
-                    {/* CTA Button */}
-                    <div className="hidden md:block">
+                    {/* Theme Toggle & CTA */}
+                    <div className="hidden md:flex items-center gap-6">
+                        <ThemeToggle />
                         <Link
                             href="#contact"
                             onClick={(e) => scrollToSection(e, '#contact')}
@@ -102,12 +107,15 @@ function Header() {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="md:hidden p-2 text-muted-foreground hover:text-primary transition-colors"
-                    >
-                        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                    </button>
+                    <div className="md:hidden flex items-center gap-4">
+                        <ThemeToggle />
+                        <button
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="p-2 text-muted-foreground hover:text-primary transition-colors"
+                        >
+                            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Mobile Navigation */}
@@ -225,10 +233,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
     return (
         <SmoothScroll>
+            <CustomCursor />
+            <ScrollScene />
             <div className="flex flex-col min-h-screen relative overflow-x-hidden bg-background">
                 <BackgroundAnimation />
                 <Header />
-                <main className="flex-1 relative z-10">
+                <main className="flex-1 relative z-10 transition-colors duration-500">
                     <PageTransition>
                         {children}
                     </PageTransition>

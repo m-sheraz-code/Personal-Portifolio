@@ -43,6 +43,7 @@ export const metadata: Metadata = {
 };
 
 import ClientLayout from '@/components/public/ClientLayout';
+import { ThemeProvider } from '@/components/ui/ThemeProvider';
 
 export default function RootLayout({
   children,
@@ -50,11 +51,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-background font-sans antialiased overflow-x-hidden">
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <body className="min-h-screen bg-background font-sans antialiased overflow-x-hidden transition-colors duration-300">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </ThemeProvider>
       </body>
     </html>
   );

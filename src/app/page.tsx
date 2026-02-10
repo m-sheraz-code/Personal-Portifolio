@@ -8,6 +8,8 @@ import * as LucideIcons from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { useState, useEffect, useRef } from 'react';
 
+import { LumosHero } from '@/components/public/LumosHero';
+import { ProcessSection } from '@/components/public/ProcessSection';
 import { Hero3D } from '@/components/public/Hero3D';
 import { Magnetic } from '@/components/ui/Magnetic';
 import { Card } from '@/components/ui/Card';
@@ -240,6 +242,8 @@ export default function HomePage() {
                 </div>
             </section>
 
+            <ProcessSection />
+
             {/* Services Section */}
             <section id="services" className="py-32 bg-surface/20 relative z-10 overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -340,48 +344,49 @@ export default function HomePage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                         {portfolios.map((project, idx) => (
                             <motion.div
-                                key={project.id}
+                                key={project.id || idx}
                                 initial={{ opacity: 0, y: 50 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-50px" }}
                                 transition={{ duration: 0.6, delay: idx * 0.1 }}
+                                className="interactive group relative"
                             >
-                                <Link href={`/portfolio/${project.slug}`}>
-                                    <Card hover glow className="p-0 overflow-hidden group">
-                                        <div className="aspect-[16/10] relative overflow-hidden bg-surface">
-                                            {project.featured_image ? (
-                                                <Image
-                                                    src={project.featured_image}
-                                                    alt={project.title}
-                                                    fill
-                                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center">
-                                                    <Code className="w-16 h-16 text-muted-foreground/30" />
-                                                </div>
-                                            )}
-                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                                                <div className="px-8 py-3 bg-white text-black font-bold rounded-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                                                    View Case Study
-                                                </div>
+                                <Card hover glow className="h-full overflow-hidden border-border/50 bg-background/50 backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:shadow-glow-lg">
+                                    {/* Project Image */}
+                                    <div className="relative aspect-video overflow-hidden">
+                                        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 flex items-center justify-center">
+                                            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500">
+                                                <ArrowRight className="w-6 h-6 text-white" />
                                             </div>
                                         </div>
-                                        <div className="p-8">
-                                            <div className="flex justify-between items-start mb-4">
-                                                <h4 className="text-3xl font-bold group-hover:text-primary transition-colors tracking-tight">{project.title}</h4>
-                                                <ArrowRight className="w-6 h-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                                            </div>
-                                            <div className="flex flex-wrap gap-3">
-                                                {project.tech_stack?.map((tech: string) => (
-                                                    <span key={tech} className="text-xs font-bold uppercase tracking-widest px-3 py-1 bg-surface-hover rounded-md text-muted-foreground border border-border">
-                                                        {tech}
-                                                    </span>
-                                                ))}
-                                            </div>
+                                        <Image
+                                            src={project.featured_image || '/next.svg'}
+                                            alt={project.title}
+                                            fill
+                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="p-8">
+                                        <div className="flex flex-wrap gap-2 mb-4">
+                                            {project.tech_stack?.slice(0, 3).map((tech: string) => (
+                                                <span key={tech} className="text-[10px] uppercase font-bold tracking-widest px-2 py-1 rounded-md bg-primary/10 text-primary border border-primary/20">
+                                                    {tech}
+                                                </span>
+                                            ))}
                                         </div>
-                                    </Card>
-                                </Link>
+                                        <h4 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{project.title}</h4>
+                                        <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
+                                            {project.description}
+                                        </p>
+                                    </div>
+                                </Card>
+                                <Link
+                                    href={`/portfolio/${project.slug}`}
+                                    className="absolute inset-0 z-20"
+                                    aria-label={`View ${project.title}`}
+                                />
                             </motion.div>
                         ))}
                     </div>
@@ -432,16 +437,16 @@ export default function HomePage() {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-foreground ml-2">Name</label>
-                                        <input type="text" placeholder="John Doe" className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium" />
+                                        <input type="text" placeholder="John Doe" className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-foreground" />
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-foreground ml-2">Email</label>
-                                        <input type="email" placeholder="john@example.com" className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium" />
+                                        <input type="email" placeholder="john@example.com" className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-foreground" />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-bold text-foreground ml-2">Project Type</label>
-                                    <select className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium appearance-none">
+                                    <select className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium appearance-none text-foreground">
                                         <option>Web Development</option>
                                         <option>AI Automation</option>
                                         <option>CRM Solution</option>
@@ -450,9 +455,9 @@ export default function HomePage() {
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-bold text-foreground ml-2">Message</label>
-                                    <textarea rows={4} placeholder="Describe your vision..." className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium resize-none"></textarea>
+                                    <textarea rows={4} placeholder="Describe your vision..." className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium resize-none text-foreground"></textarea>
                                 </div>
-                                <button className="w-full py-5 bg-foreground text-background rounded-2xl font-bold text-lg hover:bg-neutral-800 transition-all flex items-center justify-center gap-3 group">
+                                <button type="button" className="w-full py-5 bg-foreground text-background rounded-2xl font-bold text-lg hover:bg-neutral-800 transition-all flex items-center justify-center gap-3 group">
                                     Send Message
                                     <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                 </button>
