@@ -10,13 +10,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: {
-    default: 'Portfolio | Full-Stack Developer',
-    template: '%s | Portfolio',
+    default: 'Muhammad Sheraz | Full-Stack Developer & AI Expert',
+    template: '%s | Muhammad Sheraz',
   },
-  description: 'A passionate full-stack developer creating modern, performant web applications with cutting-edge technologies.',
-  keywords: ['web developer', 'full-stack', 'portfolio', 'react', 'next.js', 'typescript'],
-  authors: [{ name: 'Developer' }],
-  creator: 'Developer',
+  description: 'Muhammad Sheraz is a Full-Stack Developer specializing in MERN, Next.js, AI Automation, and CRM solutions.',
+  keywords: ['Muhammad Sheraz', 'web developer', 'full-stack', 'AI automation', 'CRM expert', 'Next.js', 'MERN'],
+  authors: [{ name: 'Muhammad Sheraz' }],
+  creator: 'Muhammad Sheraz',
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -42,6 +42,8 @@ export const metadata: Metadata = {
   },
 };
 
+import ClientLayout from '@/components/public/ClientLayout';
+
 export default function RootLayout({
   children,
 }: {
@@ -49,8 +51,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-background font-sans antialiased">
-        {children}
+      <body className="min-h-screen bg-background font-sans antialiased overflow-x-hidden">
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );
